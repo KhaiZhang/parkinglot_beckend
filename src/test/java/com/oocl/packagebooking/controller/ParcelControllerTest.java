@@ -24,8 +24,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -95,5 +94,17 @@ public class ParcelControllerTest {
         mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("update fail"));
+    }
+
+    @Test
+    public void should_add_new_parcel() throws Exception{
+        Parcel parcel = new Parcel();
+        parcel.setCustomName("Ke");
+        parcel.setPhoneNumner(13416135454L);
+        parcel.setStatus(ParcelStatus.UnMakingAppointment);
+        when(parcelService.addNewParcel(any(Parcel.class))).thenReturn(parcel);
+        mockMvc.perform(post("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(new Gson().toJson(parcel)));
     }
 }
