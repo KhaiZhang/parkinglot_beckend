@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -63,5 +66,31 @@ public class ParcelControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].status").value(ParcelStatus.MadeAppointment));
+    }
+
+    @Test
+    public void should_return_success_when_update_parcels_status_success() throws Exception{
+        Parcel parcel = new Parcel();
+        parcel.setStatus(ParcelStatus.TOKEN);
+        parcel.setCustomName("Ke");
+        parcel.setPhoneNumner(13416135454L);
+        parcel.setStatus(ParcelStatus.MadeAppointment);
+        when(parcelRepository.updateStatusById(anyInt(),anyLong())).thenReturn(1);
+        mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("update Successfully"));
+    }
+
+    @Test
+    public void should_return_fail_when_update_parcels_status_fail() throws Exception{
+        Parcel parcel = new Parcel();
+        parcel.setStatus(ParcelStatus.TOKEN);
+        parcel.setCustomName("Ke");
+        parcel.setPhoneNumner(13416135454L);
+        parcel.setStatus(ParcelStatus.MadeAppointment);
+        when(parcelRepository.updateStatusById(anyInt(),anyLong())).thenReturn(0);
+        mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("update fail"));
     }
 }

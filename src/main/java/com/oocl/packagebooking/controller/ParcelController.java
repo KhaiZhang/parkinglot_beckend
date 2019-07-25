@@ -39,4 +39,13 @@ public class ParcelController {
         List<Parcel> findParcles = parcels.stream().filter(parcel -> parcel.getStatus() == stauts).collect(Collectors.toList());
         return ResponseEntity.ok(findParcles);
     }
+
+    @PutMapping("/parcels")
+    public ResponseEntity changeParcelStatus(@RequestBody Parcel parcel){
+        int result = parcelRepository.updateStatusById(parcel.getStatus(), parcel.getId());
+        if(result == 1){
+            return ResponseEntity.ok("update Successfully");
+        }
+        else {return ResponseEntity.ok("update fail");}
+    }
 }
