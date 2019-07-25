@@ -50,4 +50,18 @@ public class ParcelControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }
+
+    @Test
+    public void should_get_parcels_filter_status() throws Exception{
+
+        Parcel parcel = new Parcel("Ground",13416133355L,ParcelStatus.UnMakingAppointment,new Date());
+        parcel.setStatus(ParcelStatus.MadeAppointment);
+        ArrayList<Parcel> parcels = new ArrayList<>();
+        parcels.add(parcel);
+        when(parcelRepository.findAll()).thenReturn(parcels);
+        mockMvc.perform(get("/parcels/{status}",ParcelStatus.MadeAppointment))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value(ParcelStatus.MadeAppointment));
+    }
 }

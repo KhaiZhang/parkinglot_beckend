@@ -5,13 +5,12 @@ import com.oocl.packagebooking.model.Parcel;
 import com.oocl.packagebooking.repository.ParcelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ParcelController {
@@ -32,5 +31,12 @@ public class ParcelController {
         parcel.setStatus(ParcelStatus.UnMakingAppointment);
         Parcel newParcel = parcelRepository.save(parcel);
         return ResponseEntity.ok(newParcel);
+    }
+
+    @GetMapping("/parcels/{status}")
+    public ResponseEntity getParcelsFilterByStatus(@PathVariable(value = "status")int stauts){
+        List<Parcel> parcels = parcelRepository.findAll();
+        List<Parcel> findParcles = parcels.stream().filter(parcel -> parcel.getStatus() == stauts).collect(Collectors.toList());
+        return ResponseEntity.ok(findParcles);
     }
 }
