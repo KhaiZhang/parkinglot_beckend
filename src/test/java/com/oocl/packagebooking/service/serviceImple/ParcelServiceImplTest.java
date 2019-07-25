@@ -17,7 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -41,7 +41,24 @@ public class ParcelServiceImplTest {
     }
 
     @Test
-    public void should_update_parcel_status() {
+    public void should_return_update_successfully_when_update_status_success() {
+        Parcel parcel = new Parcel();
+        parcel.setCustomName("khai");
+        parcel.setPhoneNumner(123124141L);
+        parcel.setStatus(ParcelStatus.MadeAppointment);
+        when(parcelRepository.updateStatusToAppointment(anyInt(),anyLong(),any())).thenReturn(1);
+        String result = parcelServiceImpl.updateParcelStatus(parcel);
+        Assertions.assertEquals(result,"update Successfully");
+    }
 
+    @Test
+    public void should_return_update_fail_when_update_status_fail() {
+        Parcel parcel = new Parcel();
+        parcel.setCustomName("khai");
+        parcel.setPhoneNumner(123124141L);
+        parcel.setStatus(ParcelStatus.MadeAppointment);
+        when(parcelRepository.updateStatusToAppointment(anyInt(),anyLong(),any())).thenReturn(0);
+        String result = parcelServiceImpl.updateParcelStatus(parcel);
+        Assertions.assertEquals(result,"update fail");
     }
 }
