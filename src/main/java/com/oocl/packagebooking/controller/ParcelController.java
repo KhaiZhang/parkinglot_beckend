@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin("http://localhost:8081")
 public class ParcelController {
 
     @Autowired
@@ -26,8 +27,8 @@ public class ParcelController {
 
     @PostMapping("/parcels")
     public ResponseEntity CreateNewParcels(@RequestBody Parcel parcel) throws Exception{
-        SimpleDateFormat simpleDate = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
-        parcel.setCreateTime(simpleDate.parse(new Date().toString()));
+//        SimpleDateFormat simpleDate = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+//        parcel.setAppointmentTime(simpleDate.parse(new Date().toString()));
         parcel.setStatus(ParcelStatus.UnMakingAppointment);
         Parcel newParcel = parcelRepository.save(parcel);
         return ResponseEntity.ok(newParcel);
@@ -42,7 +43,14 @@ public class ParcelController {
 
     @PutMapping("/parcels")
     public ResponseEntity changeParcelStatus(@RequestBody Parcel parcel){
-        int result = parcelRepository.updateStatusById(parcel.getStatus(), parcel.getId());
+        int result = 0;
+        if(parcel.getStatus() == ParcelStatus.MadeAppointment){
+           result = parcelRepository.updateStatusToAppointment(parcel.getStatus(), parcel.getId(),new Date());
+        }
+        else if(parcel.getStatus() == ParcelStatus.TOKEN){
+            result = parcelRepository.updateStatusToToken(parcel.getStatus(), parcel.getId());
+        }
+
         if(result == 1){
             return ResponseEntity.ok("update Successfully");
         }

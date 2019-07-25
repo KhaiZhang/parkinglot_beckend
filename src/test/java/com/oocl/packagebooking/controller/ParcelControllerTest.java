@@ -71,11 +71,10 @@ public class ParcelControllerTest {
     @Test
     public void should_return_success_when_update_parcels_status_success() throws Exception{
         Parcel parcel = new Parcel();
-        parcel.setStatus(ParcelStatus.TOKEN);
         parcel.setCustomName("Ke");
         parcel.setPhoneNumner(13416135454L);
-        parcel.setStatus(ParcelStatus.MadeAppointment);
-        when(parcelRepository.updateStatusById(anyInt(),anyLong())).thenReturn(1);
+        parcel.setStatus(ParcelStatus.TOKEN);
+        when(parcelRepository.updateStatusToToken(anyInt(),anyLong())).thenReturn(1);
         mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("update Successfully"));
@@ -84,11 +83,10 @@ public class ParcelControllerTest {
     @Test
     public void should_return_fail_when_update_parcels_status_fail() throws Exception{
         Parcel parcel = new Parcel();
-        parcel.setStatus(ParcelStatus.TOKEN);
         parcel.setCustomName("Ke");
         parcel.setPhoneNumner(13416135454L);
-        parcel.setStatus(ParcelStatus.MadeAppointment);
-        when(parcelRepository.updateStatusById(anyInt(),anyLong())).thenReturn(0);
+        parcel.setStatus(ParcelStatus.TOKEN);
+        when(parcelRepository.updateStatusToToken(anyInt(),anyLong())).thenReturn(0);
         mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("update fail"));

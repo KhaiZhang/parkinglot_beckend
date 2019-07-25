@@ -22,16 +22,24 @@ public class Parcel {
 
 //    @DatetimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private Date  appointmentTime;
 
     public Parcel() {
     }
 
-    public Parcel(String customName, long phoneNumner, int status, Date createTime) {
+    public Parcel(String customName, long phoneNumner, int status, Date appointmentTime) {
         this.customName = customName;
         this.phoneNumner = phoneNumner;
         this.status = status;
-        this.createTime = createTime;
+        this.appointmentTime = appointmentTime;
+    }
+
+    public Date getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
     public long getId() {
@@ -66,12 +74,6 @@ public class Parcel {
         this.status = status;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 }
 
