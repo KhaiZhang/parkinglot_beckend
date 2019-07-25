@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.oocl.packagebooking.constant.ParcelStatus;
 import com.oocl.packagebooking.model.Parcel;
 import com.oocl.packagebooking.repository.ParcelRepository;
+import com.oocl.packagebooking.service.ParcelService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,7 @@ import java.util.Date;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -40,6 +40,9 @@ public class ParcelControllerTest {
 
     @MockBean
     private ParcelRepository parcelRepository;
+
+    @MockBean
+    private ParcelService parcelService;
 
     @Test
     public void should_get_All_parcels() throws Exception{
@@ -76,7 +79,7 @@ public class ParcelControllerTest {
         parcel.setCustomName("Ke");
         parcel.setPhoneNumner(13416135454L);
         parcel.setStatus(ParcelStatus.TOKEN);
-        when(parcelRepository.updateStatusToToken(anyInt(),anyLong())).thenReturn(1);
+        when(parcelService.updateParcelStatus(any(Parcel.class))).thenReturn("update Successfully");
         mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("update Successfully"));
@@ -88,7 +91,7 @@ public class ParcelControllerTest {
         parcel.setCustomName("Ke");
         parcel.setPhoneNumner(13416135454L);
         parcel.setStatus(ParcelStatus.TOKEN);
-        when(parcelRepository.updateStatusToToken(anyInt(),anyLong())).thenReturn(0);
+        when(parcelService.updateParcelStatus(any(Parcel.class))).thenReturn("update fail");
         mockMvc.perform(put("/parcels").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(parcel)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("update fail"));
