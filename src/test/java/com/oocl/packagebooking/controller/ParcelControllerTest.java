@@ -14,9 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -57,11 +59,11 @@ public class ParcelControllerTest {
     @Test
     public void should_get_parcels_filter_status() throws Exception{
 
-        Parcel parcel = new Parcel("Ground",13416133355L,ParcelStatus.UnMakingAppointment,new Date());
+        Parcel parcel = new Parcel("Ground",13416133355L,ParcelStatus.UnMakingAppointment, new Date());
         parcel.setStatus(ParcelStatus.MadeAppointment);
         ArrayList<Parcel> parcels = new ArrayList<>();
         parcels.add(parcel);
-        when(parcelRepository.findAll()).thenReturn(parcels);
+        when(parcelRepository.findAllParcelsByStatus(ParcelStatus.MadeAppointment)).thenReturn(parcels);
         mockMvc.perform(get("/parcels/{status}",ParcelStatus.MadeAppointment))
                 .andDo(print())
                 .andExpect(status().isOk())

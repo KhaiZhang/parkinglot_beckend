@@ -21,4 +21,6 @@ public interface ParcelRepository extends JpaRepository<Parcel,Long> {
     @Modifying
     @Query("update Parcel set status = :status  where id = :id")
     public int updateStatusToToken(@Param(value = "status") int status, @Param(value = "id") long id);
+
+    public List<Parcel> findAllParcelsByStatus(@Param(value = "status") int status);
 }

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
+
 @Entity
 public class Parcel {
     @Id
@@ -22,7 +23,8 @@ public class Parcel {
 
 //    @DatetimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date  appointmentTime;
+    private Date appointmentTime;
+
 
     public Parcel() {
     }
